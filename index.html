@@ -46,7 +46,7 @@ footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .chat-toggle{position:fixed;right:24px;bottom:24px;width:62px;height:62px;border:0;border-radius:50%;background:var(--terracotta);color:#fff;font-size:25px;box-shadow:0 15px 35px rgba(0,0,0,.22);cursor:pointer;z-index:30}
 .chat{position:fixed;right:24px;bottom:96px;width:min(370px,calc(100vw - 32px));height:540px;background:#fff;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.25);z-index:29;display:none;overflow:hidden;border:1px solid var(--line)}
-.chat.open{display:flex;flex-direction:column}.chat-head{background:var(--green);color:#fff;padding:18px}.chat-head strong{display:block}.chat-head small{opacity:.8}.chat-body{padding:14px;overflow:auto;flex:1;background:#faf8f3}.msg{max-width:88%;padding:11px 13px;border-radius:15px;margin:8px 0;font-size:14px}.bot{background:#fff;border:1px solid var(--line)}.user{margin-left:auto;background:#e9d7c0}.questions{display:flex;flex-wrap:wrap;gap:7px;padding:12px;border-top:1px solid var(--line);background:#fff}.q{border:1px solid var(--line);background:#fff7ec;border-radius:999px;padding:8px 10px;font-size:12px;cursor:pointer}.q:hover{background:#f1e2ce}
+.chat.open{display:flex;flex-direction:column}.chat-head{background:var(--green);color:#fff;padding:18px}.chat-head strong{display:block}.chat-head small{opacity:.8}.chat-body{padding:14px;overflow:auto;flex:1;background:#faf8f3}.msg{max-width:88%;padding:11px 13px;border-radius:15px;margin:8px 0;font-size:14px;white-space:pre-wrap}.bot{background:#fff;border:1px solid var(--line)}.user{margin-left:auto;background:#e9d7c0}.questions{display:flex;flex-wrap:wrap;gap:7px;padding:12px;border-top:1px solid var(--line);background:#fff}.q{border:1px solid var(--line);background:#fff7ec;border-radius:999px;padding:8px 10px;font-size:12px;cursor:pointer}.q:hover{background:#f1e2ce}.chat-compose{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:#fff}.chat-input{flex:1;min-width:0;padding:11px 12px;border:1px solid var(--line);border-radius:14px;font:inherit;outline:none}.chat-input:focus{border-color:var(--terracotta)}.chat-send{width:44px;border:0;border-radius:13px;background:var(--terracotta);color:#fff;font-size:18px;cursor:pointer}.chat-send:disabled{opacity:.55;cursor:wait}.typing{font-style:italic;color:var(--muted)}
 @media(max-width:850px){.hero-grid,.contact{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:1fr}.navlinks{display:none}}
 @media(max-width:520px){.cards,.faq-grid{grid-template-columns:1fr}.hero{padding-top:50px}h1{letter-spacing:-2px}.hero-art{min-height:320px}.book{width:175px;height:225px;font-size:23px}}
 </style>
@@ -121,39 +121,125 @@ footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:
 
 <button class="chat-toggle" id="chatToggle" aria-label="Abrir chatbot">💬</button>
 <div class="chat" id="chat">
-  <div class="chat-head"><strong>Asistente de Librerías Andinas</strong><small>Pregúntame algo sobre la librería</small></div>
-  <div class="chat-body" id="chatBody"><div class="msg bot">¡Hola! 👋 Soy el asistente de Librerías Andinas. Elige una de las 10 preguntas para obtener una respuesta rápida.</div></div>
+  <div class="chat-head"><strong>Asistente de Librerías Andinas</strong><small>Consulta nuestro catálogo en tiempo real</small></div>
+  <div class="chat-body" id="chatBody"><div class="msg bot">¡Hola! 👋 Soy el asistente de Librerías Andinas. Puedo consultar nuestro catálogo y ayudarte a encontrar libros por título, autor, categoría, precio, stock o tema.</div></div>
   <div class="questions" id="questions"></div>
+  <form class="chat-compose" id="chatForm">
+    <input class="chat-input" id="chatInput" autocomplete="off" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta">
+    <button class="chat-send" id="chatSend" type="submit" aria-label="Enviar">➤</button>
+  </form>
 </div>
 
 <script>
-const answers = [
-["¿Qué vende Librerías Andinas?","Vendemos libros, útiles, materiales de arte y productos para estudio y lectura."],
-["¿Hacen delivery?","Sí. Consulta nuestra cobertura, costo y tiempo de entrega escribiéndonos por WhatsApp."],
-["¿Cómo hago un pedido?","Escríbenos por WhatsApp indicando el producto, cantidad y tus datos de contacto."],
-["¿Qué medios de pago tienen?","Consulta los medios de pago disponibles antes de confirmar tu compra."],
-["¿Tienen libros escolares?","Sí, puedes consultar disponibilidad por título, editorial o grado."],
-["¿Tienen materiales de dibujo?","Sí. Puedes consultar por materiales de dibujo, diseño y arte."],
-["¿Puedo consultar stock?","Sí. Envía el nombre del producto o una foto por WhatsApp y te ayudaremos a verificarlo."],
-["¿Cuál es su horario?","El horario oficial puede configurarse aquí cuando tengas el horario definitivo de atención."],
-["¿Aceptan cambios o devoluciones?","Consulta las condiciones aplicables a tu compra antes de solicitar un cambio."],
-["¿Cómo los contacto?","WhatsApp: +51 988 571 831. Correo: wilfredo.quintanac@unmsm.edu.pe."]
+const N8N_CHAT_URL = "https://wilfredo.app.n8n.cloud/webhook/1de598ac-8a12-4b42-b27c-364906befaf0/chat";
+const SESSION_KEY = "librerias_andinas_n8n_session";
+
+const chat = document.getElementById("chat");
+const body = document.getElementById("chatBody");
+const qs = document.getElementById("questions");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("chatInput");
+const sendButton = document.getElementById("chatSend");
+
+let sessionId = localStorage.getItem(SESSION_KEY);
+if (!sessionId) {
+  sessionId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : "la-" + Date.now() + "-" + Math.random().toString(36).slice(2);
+  localStorage.setItem(SESSION_KEY, sessionId);
+}
+
+const quickQuestions = [
+  "¿Qué libros tienen disponibles?",
+  "¿Tienen libros de arquitectura?",
+  "¿Qué libros cuestan menos de S/ 100?",
+  "¿Tienen libros sobre inteligencia artificial?",
+  "¿Qué libros tienen disponibles ahora?"
 ];
-const chat=document.getElementById("chat"), body=document.getElementById("chatBody"), qs=document.getElementById("questions");
-document.getElementById("chatToggle").onclick=()=>chat.classList.toggle("open");
-answers.forEach(([q,a])=>{
-  const b=document.createElement("button"); b.className="q"; b.textContent=q;
-  b.onclick=()=>{ body.insertAdjacentHTML("beforeend",`<div class="msg user">${q}</div><div class="msg bot">${a}</div>`); body.scrollTop=body.scrollHeight; };
+
+document.getElementById("chatToggle").onclick = () => chat.classList.toggle("open");
+
+quickQuestions.forEach((q) => {
+  const b = document.createElement("button");
+  b.className = "q";
+  b.type = "button";
+  b.textContent = q;
+  b.onclick = () => sendToAgent(q);
   qs.appendChild(b);
 });
-document.getElementById("contactForm").addEventListener("submit",e=>{
+
+function addMessage(text, type) {
+  const div = document.createElement("div");
+  div.className = "msg " + type;
+  div.textContent = text;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+  return div;
+}
+
+function setBusy(busy) {
+  sendButton.disabled = busy;
+  input.disabled = busy;
+  document.querySelectorAll(".q").forEach((button) => button.disabled = busy);
+}
+
+async function sendToAgent(message) {
+  const question = String(message || "").trim();
+  if (!question || sendButton.disabled) return;
+
+  addMessage(question, "user");
+  input.value = "";
+  const typing = addMessage("Consultando el catálogo...", "bot typing");
+  setBusy(true);
+
+  try {
+    const response = await fetch(N8N_CHAT_URL, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        action: "sendMessage",
+        sessionId: sessionId,
+        chatInput: question
+      })
+    });
+
+    if (!response.ok) throw new Error("HTTP " + response.status);
+
+    const data = await response.json();
+    const answer = data.output ?? data.text ?? data.message ?? data.response;
+
+    typing.remove();
+
+    if (typeof answer === "string" && answer.trim()) {
+      addMessage(answer, "bot");
+    } else {
+      addMessage("El agente respondió, pero el formato de respuesta no es el esperado. Revisa la salida del AI Agent en n8n.", "bot");
+      console.error("Respuesta de n8n:", data);
+    }
+  } catch (error) {
+    typing.remove();
+    addMessage("No pude conectarme con el asistente. Revisa que el workflow esté publicado y que Allowed Origin permita tu página de GitHub.", "bot");
+    console.error("Error n8n:", error);
+  } finally {
+    setBusy(false);
+    input.focus();
+  }
+}
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  sendToAgent(input.value);
+});
+
+document.getElementById("contactForm").addEventListener("submit", e => {
   e.preventDefault();
-  const n=document.getElementById("name").value, em=document.getElementById("email").value, ph=document.getElementById("phone").value, m=document.getElementById("message").value;
-  const text=`Hola Librerías Andinas. Soy ${n}. Mi correo es ${em}. Teléfono: ${ph || "No indicado"}. Consulta: ${m}`;
-  const wa=`https://wa.me/51988571831?text=${encodeURIComponent(text)}`;
-  const mail=`mailto:wilfredo.quintanac@unmsm.edu.pe?subject=${encodeURIComponent("Consulta - Librerías Andinas")}&body=${encodeURIComponent(text)}`;
-  if(confirm("¿Quieres enviar la consulta por WhatsApp?")) window.open(wa,"_blank");
-  else window.location.href=mail;
+  const n = document.getElementById("name").value;
+  const em = document.getElementById("email").value;
+  const ph = document.getElementById("phone").value;
+  const m = document.getElementById("message").value;
+  const text = `Hola Librerías Andinas. Soy ${n}. Mi correo es ${em}. Teléfono: ${ph || "No indicado"}. Consulta: ${m}`;
+  const wa = `https://wa.me/51988571831?text=${encodeURIComponent(text)}`;
+  const mail = `mailto:wilfredo.quintanac@unmsm.edu.pe?subject=${encodeURIComponent("Consulta - Librerías Andinas")}&body=${encodeURIComponent(text)}`;
+  if (confirm("¿Quieres enviar la consulta por WhatsApp?")) window.open(wa, "_blank");
+  else window.location.href = mail;
 });
 </script>
 </body>
