@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Librerías Andinas | Cultura que conecta</title>
+<meta name="description" content="Librerías Andinas, librería peruana con libros, útiles y productos para aprender, crear y compartir.">
+<style>
+:root{
+  --ink:#20231f; --muted:#686d65; --cream:#f7f1e5; --paper:#fffdf8;
+  --terracotta:#a94f38; --gold:#d39b43; --green:#315b4a; --line:#e6ddcf;
+  --shadow:0 18px 50px rgba(48,38,25,.12); --radius:24px;
+}
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink);background:var(--cream);line-height:1.55}
+a{text-decoration:none;color:inherit}.container{width:min(1120px,92%);margin:auto}
+header{position:sticky;top:0;z-index:20;background:rgba(247,241,229,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(230,221,207,.8)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-.5px}
+.logo-mark{width:42px;height:42px;border-radius:12px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:21px}
+.navlinks{display:flex;gap:26px;font-size:14px;color:#50544e}.navlinks a:hover{color:var(--terracotta)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 19px;font-weight:800;cursor:pointer}
+.btn-primary{background:var(--terracotta);color:white}.btn-dark{background:var(--green);color:white}.btn-light{background:#fff;border:1px solid var(--line)}
+.hero{padding:78px 0 72px;background:
+ radial-gradient(circle at 82% 22%,rgba(211,155,67,.25),transparent 28%),
+ radial-gradient(circle at 15% 75%,rgba(49,91,74,.14),transparent 30%)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:60px}
+.kicker{color:var(--terracotta);font-weight:900;text-transform:uppercase;letter-spacing:2px;font-size:12px}
+h1{font-family:Georgia,serif;font-size:clamp(44px,6vw,76px);line-height:.98;letter-spacing:-3px;margin:14px 0 22px}
+.hero p{font-size:19px;color:var(--muted);max-width:610px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero-art{min-height:410px;border-radius:36px;background:var(--green);position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.sun{position:absolute;width:230px;height:230px;border-radius:50%;background:var(--gold);right:-45px;top:-45px}
+.mountain{position:absolute;bottom:0;width:0;height:0;border-left:190px solid transparent;border-right:190px solid transparent;border-bottom:290px solid #476e59}
+.m1{left:-50px}.m2{left:180px;border-bottom-color:#6f8b68;border-left-width:150px;border-right-width:150px;border-bottom-height:240px}
+.book{position:absolute;left:50%;top:50%;transform:translate(-50%,-42%) rotate(-5deg);width:220px;height:280px;background:#fff8e9;border-radius:8px 16px 16px 8px;box-shadow:14px 18px 0 rgba(0,0,0,.15);padding:30px 25px;color:var(--green);font-family:Georgia,serif;font-size:29px;font-weight:bold}
+.book:before{content:"LIBRERÍAS\\A ANDINAS";white-space:pre;display:block;border-left:5px solid var(--terracotta);padding-left:13px}
+section{padding:78px 0}.section-head{max-width:680px;margin-bottom:35px}.section-head h2{font-family:Georgia,serif;font-size:42px;line-height:1.05;margin:8px 0 12px}.section-head p{color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px;min-height:190px}.icon{font-size:30px}.card h3{margin:14px 0 5px}.card p{color:var(--muted);font-size:14px}
+.band{background:var(--green);color:white}.band .section-head p{color:#d9e1db}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature{padding:25px;border:1px solid rgba(255,255,255,.15);border-radius:20px;background:rgba(255,255,255,.06)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.faq{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px}.faq strong{display:block;margin-bottom:7px}.faq span{color:var(--muted);font-size:14px}
+.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:35px}.contact-panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow)}
+form{display:grid;gap:14px}label{font-size:13px;font-weight:800}input,textarea{width:100%;padding:14px 15px;border:1px solid var(--line);border-radius:14px;background:#fff;font:inherit}textarea{min-height:120px;resize:vertical}
+footer{padding:35px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer .container{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.chat-toggle{position:fixed;right:24px;bottom:24px;width:62px;height:62px;border:0;border-radius:50%;background:var(--terracotta);color:#fff;font-size:25px;box-shadow:0 15px 35px rgba(0,0,0,.22);cursor:pointer;z-index:30}
+.chat{position:fixed;right:24px;bottom:96px;width:min(370px,calc(100vw - 32px));height:540px;background:#fff;border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.25);z-index:29;display:none;overflow:hidden;border:1px solid var(--line)}
+.chat.open{display:flex;flex-direction:column}.chat-head{background:var(--green);color:#fff;padding:18px}.chat-head strong{display:block}.chat-head small{opacity:.8}.chat-body{padding:14px;overflow:auto;flex:1;background:#faf8f3}.msg{max-width:88%;padding:11px 13px;border-radius:15px;margin:8px 0;font-size:14px}.bot{background:#fff;border:1px solid var(--line)}.user{margin-left:auto;background:#e9d7c0}.questions{display:flex;flex-wrap:wrap;gap:7px;padding:12px;border-top:1px solid var(--line);background:#fff}.q{border:1px solid var(--line);background:#fff7ec;border-radius:999px;padding:8px 10px;font-size:12px;cursor:pointer}.q:hover{background:#f1e2ce}
+@media(max-width:850px){.hero-grid,.contact{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.features{grid-template-columns:1fr}.navlinks{display:none}}
+@media(max-width:520px){.cards,.faq-grid{grid-template-columns:1fr}.hero{padding-top:50px}h1{letter-spacing:-2px}.hero-art{min-height:320px}.book{width:175px;height:225px;font-size:23px}}
+</style>
+</head>
+<body>
+<header><div class="container nav">
+  <a class="logo" href="#"><span class="logo-mark">LA</span><span>Librerías Andinas</span></a>
+  <nav class="navlinks"><a href="#categorias">Categorías</a><a href="#nosotros">Nosotros</a><a href="#faq">Preguntas frecuentes</a><a href="#contacto">Contacto</a></nav>
+  <a class="btn btn-primary" href="https://wa.me/51988571831?text=Hola%20Librer%C3%ADas%20Andinas%2C%20quiero%20hacer%20una%20consulta." target="_blank">WhatsApp</a>
+</div></header>
+
+<main>
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <div class="kicker">Librería peruana · Cultura · Aprendizaje</div>
+    <h1>Historias que encuentran su camino.</h1>
+    <p>Bienvenido a Librerías Andinas, un espacio pensado para quienes leen, estudian, crean y buscan nuevas ideas. Descubre libros, útiles y productos para acompañar cada proyecto.</p>
+    <div class="actions"><a class="btn btn-primary" href="#categorias">Explorar categorías</a><a class="btn btn-light" href="#contacto">Solicitar información</a></div>
+  </div>
+  <div class="hero-art"><div class="sun"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="book"></div></div>
+</div></section>
+
+<section id="categorias"><div class="container">
+  <div class="section-head"><div class="kicker">Lo que encontrarás</div><h2>Una librería para distintas formas de aprender.</h2><p>Organiza aquí tus categorías reales, precios y disponibilidad cuando tengas el catálogo definitivo.</p></div>
+  <div class="cards">
+    <article class="card"><div class="icon">📚</div><h3>Libros</h3><p>Literatura, educación, ciencias, arquitectura y mucho más.</p></article>
+    <article class="card"><div class="icon">✏️</div><h3>Útiles</h3><p>Material escolar, universitario y de oficina para el día a día.</p></article>
+    <article class="card"><div class="icon">🎨</div><h3>Arte y diseño</h3><p>Materiales para dibujar, crear y desarrollar nuevas ideas.</p></article>
+    <article class="card"><div class="icon">🎁</div><h3>Regalos</h3><p>Detalles y productos seleccionados para lectores y creativos.</p></article>
+  </div>
+</div></section>
+
+<section id="nosotros" class="band"><div class="container">
+  <div class="section-head"><div class="kicker">Nuestra propuesta</div><h2>Tradición peruana, atención cercana.</h2><p>Una identidad visual inspirada en los Andes sin convertir la marca en un museo. La información comercial específica queda editable para que puedas adaptarla.</p></div>
+  <div class="features">
+    <div class="feature"><h3>📖 Variedad</h3><p>Catálogo organizado para estudiar, trabajar, leer y crear.</p></div>
+    <div class="feature"><h3>🤝 Atención</h3><p>Consultas rápidas por WhatsApp y formulario de contacto.</p></div>
+    <div class="feature"><h3>🇵🇪 Identidad</h3><p>Una marca peruana con una estética contemporánea y cálida.</p></div>
+  </div>
+</div></section>
+
+<section id="faq"><div class="container">
+  <div class="section-head"><div class="kicker">10 preguntas básicas</div><h2>El asistente responde al instante.</h2><p>Haz clic en una pregunta del chatbot. Las respuestas son editables desde el código.</p></div>
+  <div class="faq-grid">
+    <div class="faq"><strong>1. ¿Qué vende Librerías Andinas?</strong><span>Libros, útiles, materiales de arte y productos para estudio y lectura.</span></div>
+    <div class="faq"><strong>2. ¿Hacen delivery?</strong><span>Sí, puedes consultar cobertura, costo y tiempo de entrega por WhatsApp.</span></div>
+    <div class="faq"><strong>3. ¿Cómo hago un pedido?</strong><span>Escríbenos por WhatsApp indicando producto, cantidad y datos de contacto.</span></div>
+    <div class="faq"><strong>4. ¿Qué medios de pago tienen?</strong><span>Consulta los medios de pago disponibles antes de confirmar tu compra.</span></div>
+    <div class="faq"><strong>5. ¿Tienen libros escolares?</strong><span>Consulta disponibilidad por título, editorial o grado.</span></div>
+    <div class="faq"><strong>6. ¿Tienen materiales de dibujo?</strong><span>Sí, consulta por materiales de dibujo, diseño y arte.</span></div>
+    <div class="faq"><strong>7. ¿Puedo consultar stock?</strong><span>Sí. Envía el nombre o una foto del producto por WhatsApp.</span></div>
+    <div class="faq"><strong>8. ¿Cuál es su horario?</strong><span>El horario definitivo puede configurarse aquí cuando tengas los datos oficiales.</span></div>
+    <div class="faq"><strong>9. ¿Aceptan cambios o devoluciones?</strong><span>Consulta las condiciones aplicables a tu compra antes de solicitar un cambio.</span></div>
+    <div class="faq"><strong>10. ¿Cómo los contacto?</strong><span>WhatsApp: +51 988 571 831 · correo: wilfredo.quintanac@unmsm.edu.pe</span></div>
+  </div>
+</div></section>
+
+<section id="contacto"><div class="container contact">
+  <div><div class="kicker">Contacto</div><h2 style="font-family:Georgia,serif;font-size:42px;line-height:1.05">Cuéntanos qué estás buscando.</h2><p style="color:var(--muted)">El formulario genera un mensaje listo para WhatsApp y un correo listo para enviar. Para envío automático por correo se necesita conectar un servicio de email/API.</p>
+  <p><strong>WhatsApp</strong><br>+51 988 571 831</p><p><strong>Correo</strong><br>wilfredo.quintanac@unmsm.edu.pe</p></div>
+  <div class="contact-panel"><form id="contactForm">
+    <div><label>Nombre</label><input id="name" required placeholder="Tu nombre"></div>
+    <div><label>Correo</label><input id="email" type="email" required placeholder="tu@email.com"></div>
+    <div><label>Teléfono</label><input id="phone" placeholder="+51 ..."></div>
+    <div><label>Mensaje</label><textarea id="message" required placeholder="¿Qué producto o información necesitas?"></textarea></div>
+    <button class="btn btn-primary" type="submit">Enviar consulta</button>
+  </form></div>
+</div></section>
+</main>
+
+<footer><div class="container"><div>© 2026 Librerías Andinas · Perú</div><div>WhatsApp +51 988 571 831 · wilfredo.quintanac@unmsm.edu.pe</div></div></footer>
+
+<button class="chat-toggle" id="chatToggle" aria-label="Abrir chatbot">💬</button>
+<div class="chat" id="chat">
+  <div class="chat-head"><strong>Asistente de Librerías Andinas</strong><small>Pregúntame algo sobre la librería</small></div>
+  <div class="chat-body" id="chatBody"><div class="msg bot">¡Hola! 👋 Soy el asistente de Librerías Andinas. Elige una de las 10 preguntas para obtener una respuesta rápida.</div></div>
+  <div class="questions" id="questions"></div>
+</div>
+
+<script>
+const answers = [
+["¿Qué vende Librerías Andinas?","Vendemos libros, útiles, materiales de arte y productos para estudio y lectura."],
+["¿Hacen delivery?","Sí. Consulta nuestra cobertura, costo y tiempo de entrega escribiéndonos por WhatsApp."],
+["¿Cómo hago un pedido?","Escríbenos por WhatsApp indicando el producto, cantidad y tus datos de contacto."],
+["¿Qué medios de pago tienen?","Consulta los medios de pago disponibles antes de confirmar tu compra."],
+["¿Tienen libros escolares?","Sí, puedes consultar disponibilidad por título, editorial o grado."],
+["¿Tienen materiales de dibujo?","Sí. Puedes consultar por materiales de dibujo, diseño y arte."],
+["¿Puedo consultar stock?","Sí. Envía el nombre del producto o una foto por WhatsApp y te ayudaremos a verificarlo."],
+["¿Cuál es su horario?","El horario oficial puede configurarse aquí cuando tengas el horario definitivo de atención."],
+["¿Aceptan cambios o devoluciones?","Consulta las condiciones aplicables a tu compra antes de solicitar un cambio."],
+["¿Cómo los contacto?","WhatsApp: +51 988 571 831. Correo: wilfredo.quintanac@unmsm.edu.pe."]
+];
+const chat=document.getElementById("chat"), body=document.getElementById("chatBody"), qs=document.getElementById("questions");
+document.getElementById("chatToggle").onclick=()=>chat.classList.toggle("open");
+answers.forEach(([q,a])=>{
+  const b=document.createElement("button"); b.className="q"; b.textContent=q;
+  b.onclick=()=>{ body.insertAdjacentHTML("beforeend",`<div class="msg user">${q}</div><div class="msg bot">${a}</div>`); body.scrollTop=body.scrollHeight; };
+  qs.appendChild(b);
+});
+document.getElementById("contactForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const n=document.getElementById("name").value, em=document.getElementById("email").value, ph=document.getElementById("phone").value, m=document.getElementById("message").value;
+  const text=`Hola Librerías Andinas. Soy ${n}. Mi correo es ${em}. Teléfono: ${ph || "No indicado"}. Consulta: ${m}`;
+  const wa=`https://wa.me/51988571831?text=${encodeURIComponent(text)}`;
+  const mail=`mailto:wilfredo.quintanac@unmsm.edu.pe?subject=${encodeURIComponent("Consulta - Librerías Andinas")}&body=${encodeURIComponent(text)}`;
+  if(confirm("¿Quieres enviar la consulta por WhatsApp?")) window.open(wa,"_blank");
+  else window.location.href=mail;
+});
+</script>
+</body>
+</html>
